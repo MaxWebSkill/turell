@@ -2,6 +2,7 @@
 
 #include <Servo.h>
 int X=90;
+int Y=90;
 bool f=false;
 static void tr(){
   f=!f;
@@ -9,6 +10,8 @@ static void tr(){
 const int stepsPerRevolution=1024;
 const int trigPin = 11;
 const int echoPin = 10;
+int xv;
+int yv;
 int valpot;
 int angle;
 int potenciometr;
@@ -33,18 +36,25 @@ void loop() {
   Serial.println(f);
   button.tick();
   if(f==false){
+    int X=90;
+    int Y=90;
     if(digitalRead(3)==0){
       digitalWrite(13,1);
     }
        if(digitalRead(3)==1){
       digitalWrite(13,0);
     }
-    valpot=analogRead(0);
-    angle=map(valpot,0,1023,0,180);
-    avtomat.write(angle);
+    int xv=analogRead(0);
+    int yv=analogRead(1);
+    int xvf=map(xv,0,1023,0,180);
+    int yvf=map(yv,0,1023,0,180);
+    avtomat.write(xvf);
+    myServo.write(yvf);
     delay(30);
   }
   if(f==true){
+     avtomat.write(X);
+  myServo.write(Y);
       if(Serial.available()>0){
     char a = Serial.read();
     switch(a){
@@ -54,9 +64,16 @@ void loop() {
       case 'l':
       if(X<180) X++;
       break;
+      case 'd':
+      if(Y<180) Y++;
+      break;
+      case 'u':
+      if(Y>0) Y--;
+      break;
     }
+
   }
-  avtomat.write(X);
+ 
   Serial.println(X);}
 
   
