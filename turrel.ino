@@ -27,7 +27,7 @@ void setup() {
   pinMode(echoPin, INPUT); 
   Serial.begin(9600); 
   myServo.attach(9); 
-  avtomat.attach(12);
+  avtomat.attach(10);
   avtomat.write(0);
   button.attachClick(tr);
 }
