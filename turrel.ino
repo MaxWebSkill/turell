@@ -36,25 +36,23 @@ void loop() {
   Serial.println(f);
   button.tick();
   if(f==false){
-    int X=90;
-    int Y=90;
     if(digitalRead(3)==0){
       digitalWrite(13,1);
     }
        if(digitalRead(3)==1){
       digitalWrite(13,0);
     }
-    int xv=analogRead(0);
-    int yv=analogRead(1);
-    int xvf=map(xv,0,1023,0,180);
-    int yvf=map(yv,0,1023,0,180);
-    avtomat.write(xvf);
-    myServo.write(yvf);
+    xv=analogRead(0) - 512;
+    yv=analogRead(1) - 512;
+
+    if(xv > 64) X++;
+    else if(xv < -64) X--;
+    if(yv > 64) Y++;
+    else if(yv < -64) Y--;
+    
     delay(30);
   }
   if(f==true){
-     avtomat.write(X);
-  myServo.write(Y);
       if(Serial.available()>0){
     char a = Serial.read();
     switch(a){
@@ -73,7 +71,11 @@ void loop() {
     }
 
   }
- 
+
+avtomat.write(X);
+      myServo.write(Y);
+      
+    
   Serial.println(X);}
 
   
